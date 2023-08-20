@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <title>amis demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <link rel="stylesheet" href="/static/jssdk/sdk.css"/>
+    <link rel="stylesheet" href="/static/jssdk/helper.css"/>
+    <link rel="stylesheet" href="/static/jssdk/iconfont.css"/>
+    <!-- 这是默认主题所需的，如果是其他主题则不需要 -->
+    <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
+    <!-- <link rel="stylesheet" href="jssdk/sdk-ie11.css" /> -->
+    <!-- 不过 amis 开发团队几乎没测试过 IE 11 下的效果，所以可能有细节功能用不了，如果发现请报 issue -->
+    <style>
+        html,
+        body,
+        .app-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="root" class="app-wrapper"></div>
+<script src="/static/jssdk/sdk.js"></script>
+<script type="text/javascript">
+    (function () {
+        let amis = amisRequire('amis/embed');
+        // 通过替换下面这个配置来生成不同页面
+        let amisJSON = {
+            "type": "page",
+            "body": [
+                {
+                    "type": "button",
+                    "label": "ajax 请求",
+                    "onEvent": {
+                        "click": {
+                            "actions": [
+                                // {
+                                //     "actionType": "toast", // 执行toast提示动作
+                                //     "args": { // 动作参数
+                                //         "msgType": "info",
+                                //         "msg": "派发点击事件"
+                                //     }
+                                // },
+                                // {
+                                //     "componentId": "service_image",
+                                //     "actionType": "reload",
+                                //     "data": {
+                                //         "image_url": "http://static.runoob.com/images/demo/demo1.jpg"
+                                //     }
+                                // }
+                                {
+                                    "actionType": "ajax",
+                                    "api": {
+                                        "url": "http://localhost:8000/urls",
+                                        "method": "get",
+                                    }
+                                },
+                                {
+                                    "componentId": "service_image",
+                                    "actionType": "reload",
+                                    "data": {
+                                        "image_url": "http://static.runoob.com/images/demo/demo1.jpg"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+
+                    // "actionType": "ajax",
+                    // "api": {
+                    //     "method": "options",
+                    //     "url": "https://cdn.discordapp.com/attachments/1093476470984294522/1142458530977304576/hideonbus__3996048057one_man_stands_in_front_of_car_70a80d6c-57ab-4cc9-a283-3f4272012947.png",
+                    //     "headers": {
+                    //         "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+                    //         "Sec-Fetch-Site": "cross-site",
+                    //         "Sec-Fetch-Mode": "no-cors",
+                    //         "Accept-Encoding": "gzip, deflate, br",
+                    //         "Cookie": "__cf_bm=alRYl.aF_sBFpqTMivlY5s.OwgBGLOcqsMkktD8gxCg-1692539402-0-AXLiqJ5U359LMRWcKJ5q0036SbsXq3APsQBznSExmeu4vp5p2tiYzPaM1+SX9JY7LSFNi/u4IuwYU6cich9hUJM=",
+                    //         "Referer": '*',
+                    //         "Access-Control-Expose-Headers":  "Content-Disposition"
+                    //     }
+                    // },
+                    // "api": {
+                    //     "url": "http://localhost:8000/static/img.png",
+                    //     "method": "get",
+                    //     "headers": {
+                    //         "Accept": "image/*,*/*;q=0.8",
+                    //     }
+                    // },
+                    "reload": "image",
+
+                },
+                // {
+                //     "type": "divider"
+                // },
+                // {
+                //     "type": "image",
+                //     "id": "image1",
+                //     "name": "image1",
+                //     "src": "${src}"
+                // }
+
+                {
+                    "type": "service",
+                    "id": "service_image",
+                    "body": {
+                        "type": "image",
+                        // "src": "https://cdn.discordapp.com/attachments/1093476470984294522/1142458530977304576/hideonbus__3996048057one_man_stands_in_front_of_car_70a80d6c-57ab-4cc9-a283-3f4272012947.png"
+                        "src": "${image_url}",
+                        // "href": "${image_url}",
+                        "enlargeAble": true
+                    }
+                }
+
+            ]
+        };
+        let amisScoped = amis.embed('#root', amisJSON);
+    })
+    ();
+</script>
+</body>
+</html>
