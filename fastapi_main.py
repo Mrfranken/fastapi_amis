@@ -7,24 +7,32 @@ import uvicorn
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-origins = ['*']
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# origins = ['*']
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
 def read_root(request: Request):
-    return templates.TemplateResponse("2.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request})
+
 
 @app.get("/urls/")
 def read_root():
-    return {"url": "http://static.runoob.com/images/demo/demo1.jpg"}
+    # url = "https://cdn.discordapp.com/attachments/1093476470984294522/1142458530977304576/hideonbus__3996048057one_man_stands_in_front_of_car_70a80d6c-57ab-4cc9-a283-3f4272012947.png"
+    return {
+        "status": 0,
+        "msg": "获取成功",
+        "data": {
+            "url": "http://static.runoob.com/images/demo/demo2.jpg"
+        }
+    }
 
 
 if __name__ == "__main__":

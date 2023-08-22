@@ -9,9 +9,9 @@
             content="width=device-width, initial-scale=1, maximum-scale=1"
     />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-    <link rel="stylesheet" href="./static/jssdk/sdk.css"/>
-    <link rel="stylesheet" href="./static/jssdk/helper.css"/>
-    <link rel="stylesheet" href="./static/jssdk/iconfont.css"/>
+    <link rel="stylesheet" href="/static/jssdk/sdk.css"/>
+    <link rel="stylesheet" href="/static/jssdk/helper.css"/>
+    <link rel="stylesheet" href="/static/jssdk/iconfont.css"/>
     <!-- 这是默认主题所需的，如果是其他主题则不需要 -->
     <!-- 从 1.1.0 开始 sdk.css 将不支持 IE 11，如果要支持 IE11 请引用这个 css，并把前面那个删了 -->
     <!-- <link rel="stylesheet" href="jssdk/sdk-ie11.css" /> -->
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="root" class="app-wrapper"></div>
-<script src="./static/jssdk/sdk.js"></script>
+<script src="/static/jssdk/sdk.js"></script>
 <script type="text/javascript">
     (function () {
         let amis = amisRequire('amis/embed');
@@ -41,30 +41,41 @@
                 {
                     "type": "button",
                     "label": "ajax 请求",
-                    "actionType": "ajax",
-                    // "api": {
-                    //     "method": "get",
-                    //     "url": "https://cdn.discordapp.com/attachments/1093476470984294522/1142458530977304576/hideonbus__3996048057one_man_stands_in_front_of_car_70a80d6c-57ab-4cc9-a283-3f4272012947.png",
-                        // "headers": {
-                        //     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-                        //     "Sec-Fetch-Site": "cross-site",
-                        //     "Sec-Fetch-Mode": "no-cors",
-                        //     "Referer": '*',
-                            // "Access-Control-Expose-Headers":  "Content-Disposition"
-                        // }
-                    // },
-                    "api": "https://cdn.discordapp.com/attachments/1093476470984294522/1142458530977304576/hideonbus__3996048057one_man_stands_in_front_of_car_70a80d6c-57ab-4cc9-a283-3f4272012947.png",
+                    "onEvent": {
+                        "click": {
+                            "actions": [
+                                {
+                                    "actionType": "ajax",
+                                    "api": {
+                                        "url": "http://localhost:8000/urls",
+                                        "method": "get",
+                                    }
+                                },
+                                {
+                                    "componentId": "service_image",
+                                    "expression": "${event.data.responseResult.responseStatus === 0}",
+                                    "actionType": "reload",
+                                    "data": {
+                                        "image_url": "${event.data.responseResult.responseData.url}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
                     "reload": "image",
+                },
 
-                },
                 {
-                    "type": "divider"
-                },
-                {
-                    "type": "image",
-                    "name": "image",
-                    "src": ""
+                    "type": "service",
+                    "id": "service_image",
+                    "body": {
+                        "type": "image",
+                        "src": "${image_url}",
+                        // "href": "${image_url}",
+                        "enlargeAble": true
+                    }
                 }
+
             ]
         };
         let amisScoped = amis.embed('#root', amisJSON);

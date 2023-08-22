@@ -26,6 +26,7 @@
             margin: 0;
             padding: 0;
         }
+
     </style>
 </head>
 <body>
@@ -63,13 +64,24 @@
                                     "api": {
                                         "url": "http://localhost:8000/urls",
                                         "method": "get",
+<!--                                        "responseData": {-->
+<!--                                            "url": "${url}"-->
+<!--                                        },-->
                                     }
                                 },
+<!--                                {-->
+<!--                                  "actionType": "toast",-->
+<!--                                  "expression": "${event.data.responseResult.responseStatus === 0}",-->
+<!--                                  "args": {-->
+<!--                                    "msg": "${event.data.responseResult|json}"-->
+<!--                                  }-->
+<!--                                },-->
                                 {
                                     "componentId": "service_image",
+                                    "expression": "${event.data.responseResult.responseStatus === 0}",
                                     "actionType": "reload",
                                     "data": {
-                                        "image_url": "http://static.runoob.com/images/demo/demo1.jpg"
+                                        "image_url": "${event.data.responseResult.responseData.url}"
                                     }
                                 }
                             ]
@@ -127,6 +139,7 @@
         let amisScoped = amis.embed('#root', amisJSON);
     })
     ();
+
 </script>
 </body>
 </html>
