@@ -6,6 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import requests
 
+count = 0
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 origins = ["*"]
@@ -67,24 +69,43 @@ js = """
 
 @app.get("/", response_class=HTMLResponse)
 def read_root(request: Request):
-    o = ''
-    for index in range(len(requests.get('http://localhost:8000/urls').json()["data"])):
-        index += 1
-        o = o + js % (index, index, index, index, index) + ','
-    return templates.TemplateResponse("index1.html", {"request": request, "js": o})
+    # o = ''
+    # for index in range(len(requests.get('http://localhost:8000/urls').json()["data"])):
+    #     index += 1
+    #     o = o + js % (index, index, index, index, index) + ','
+    # return templates.TemplateResponse("index1.html", {"request": request, "js": o})
+    return templates.TemplateResponse("click_show_pics1.html", {"request": request})
 
 
 @app.get("/urls/")
 def read_root():
+    global count
     url1 = "https://cdn.discordapp.com/attachments/1093476470984294522/1142458530977304576/hideonbus__3996048057one_man_stands_in_front_of_car_70a80d6c-57ab-4cc9-a283-3f4272012947.png"
-    url2 = "http://static.runoob.com/images/demo/demo2.jpg"
+    url2 = "https://i.pinimg.com/564x/8d/c7/84/8dc78480326d84749dce009e934e0f10.jpg"
+    # return {
+    #     "status": 0,
+    #     "msg": "获取成功",
+    #     "data": {
+    #         "url1": url1,
+    #         "url2": url2,
+    #     }
+    # }
+    urls = [{
+        "image": url1,
+        "src": url1,
+        "title": "1",
+        "description": "1"
+    }, {
+        "image": url2,
+        "src": url2,
+        "title": "2",
+        "description": "2"
+    }]
+
     return {
         "status": 0,
         "msg": "获取成功",
-        "data": {
-            "url1": url1,
-            "url2": url2,
-        }
+        "data": {"urls": urls}
     }
 
 
